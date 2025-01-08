@@ -19,12 +19,12 @@ export default function App() {
   const commonTranslation = useTranslate("common");
 
   return (
-    <div className="">
+    <div className="h-screen dark:bg-black">
       <h2 className="text-center font-bold">{translatePage.heyyTranslate}</h2>
 
       <input
-        className="w-full border-2 my-4 p-2"
-        placeholder="Enter your translation here..."
+        className="w-full border-2 my-4 p-2 px-4 focus:outline-none rounded-full"
+        placeholder="Heyy, say something..."
         onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
           if (event.key === "Enter") {
             const value = (event.target as HTMLInputElement)?.value;
@@ -43,7 +43,7 @@ export default function App() {
         }}
       />
 
-      <section>
+      <section className="">
         <h2 className="text-center text-2xl font-extralight mt-4">
           Select Target Language
         </h2>

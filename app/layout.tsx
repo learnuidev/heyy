@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ClerkNav } from "./components/clerk-nav";
 import { QueryClientProvider } from "@/lib/react-query/query-client-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,12 +34,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.className} antialiased p-4`}
       >
-        <QueryClientProvider>
-          <ClerkProvider>
-            <ClerkNav />
-            {children}
-          </ClerkProvider>
-        </QueryClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryClientProvider>
+            <ClerkProvider>
+              <ClerkNav />
+              {children}
+            </ClerkProvider>
+          </QueryClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
