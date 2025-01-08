@@ -18,7 +18,9 @@ export const HomeBanner = () => {
       </SignedOut>
 
       <SignedIn>
-        <RoundedLink href="/app">{translation.gettingStarted}</RoundedLink>
+        <RoundedLink href="/translate">
+          {translation.gettingStarted}
+        </RoundedLink>
       </SignedIn>
     </section>
   );
