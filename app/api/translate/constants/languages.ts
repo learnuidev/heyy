@@ -3,12 +3,18 @@ import ukFlag from "./uk.png";
 import frenchFlag from "./fr.png";
 import spanishFlag from "./es.webp";
 import romanianFlag from "./romanian.webp";
+import italianFlag from "./it.webp";
 
 export const languages = [
   {
     id: "zh-CN",
     title: "Chinese",
     src: chineseFlag.src,
+  },
+  {
+    id: "it-IT",
+    title: "Italian",
+    src: italianFlag.src,
   },
   {
     id: "en-UK",

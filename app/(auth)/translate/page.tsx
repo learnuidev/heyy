@@ -3,13 +3,13 @@
 
 import { languages } from "@/app/api/translate/constants/languages";
 import { useTranslate } from "@/lib/i18n/hooks/use-translate";
+import { TranslateResponse } from "@/modules/translate/translate.types";
 import { useTranslateMutation } from "@/modules/translate/use-translate-mutation";
 
 import { useState } from "react";
 
 export default function App() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [resp, setResp] = useState<any>();
+  const [resp, setResp] = useState<TranslateResponse>();
   const [textInput, setTextInput] = useState("");
   const [targetLang, setTargetLang] = useState("zh-CN");
 
@@ -72,10 +72,10 @@ export default function App() {
           <div> {commonTranslation.loading} </div>
         ) : (
           <div>
-            <p className="font-extralight text-2xl text-gray-500 dark:text-gray-200">
+            <p className="font-light text-2xl text-gray-500 dark:text-gray-200">
               {textInput}
             </p>
-            <p className="text-2xl font-bold">{resp?.text}</p>
+            <p className="text-4xl font-bold">{resp?.text}</p>
           </div>
         )}
       </div>
