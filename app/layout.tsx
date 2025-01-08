@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { ClerkNav } from "./components/clerk-nav";
+import { QueryClientProvider } from "@/lib/react-query/query-client-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,15 +27,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased p-4`}
-        >
-          <ClerkNav />
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased p-4`}
+      >
+        <QueryClientProvider>
+          <ClerkProvider>
+            <ClerkNav />
+            {children}
+          </ClerkProvider>
+        </QueryClientProvider>
+      </body>
+    </html>
   );
 }

@@ -5,6 +5,7 @@ import {
   TranslateParams,
   TranslateResponse,
 } from "@/modules/translate/translate.types";
+import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 const translate = async ({
@@ -36,24 +37,34 @@ export default function App() {
   const [inputText, setInput] = useState("");
   const [resp, setResp] = useState("");
 
+  const { getToken } = useAuth();
+
   const translatePage = useTranslate("translate");
   const commonTranslation = useTranslate("common");
 
   useEffect(() => {
-    setIsError(false);
-    setIsTranslating(true);
-    translate({
-      text: inputText,
-      targetLang: "en-US",
-    })
-      .then((resp) => {
-        setIsTranslating(false);
-        setResp(resp.text);
+    getToken().then((token) => {
+      console.log("alert", token);
+    });
+  }, [getToken]);
+
+  useEffect(() => {
+    if (inputText) {
+      setIsError(false);
+      setIsTranslating(true);
+      translate({
+        text: inputText,
+        targetLang: "en-US",
       })
-      .catch(() => {
-        setIsTranslating(false);
-        setIsError(true);
-      });
+        .then((resp) => {
+          setIsTranslating(false);
+          setResp(resp.text);
+        })
+        .catch(() => {
+          setIsTranslating(false);
+          setIsError(true);
+        });
+    }
   }, [inputText]);
   return (
     <div>
