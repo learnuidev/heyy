@@ -1,71 +1,19 @@
 "use client";
 
 import { useTranslate } from "@/lib/i18n/hooks/use-translate";
-import {
-  TranslateParams,
-  TranslateResponse,
-} from "@/modules/translate/translate.types";
-import { useAuth } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useTranslateMutation } from "@/modules/translate/use-translate-mutation";
 
-const translate = async ({
-  text,
-  targetLang,
-}: TranslateParams): Promise<TranslateResponse> => {
-  const resp = await fetch(`/api/translate`, {
-    method: "POST",
-    // headers: {},
-    body: JSON.stringify({
-      text,
-      targetLang,
-    }),
-  });
-
-  // throw new Error("yooo");
-
-  if (!resp.ok) {
-    throw new Error(resp.statusText || "Error");
-  }
-
-  const respJson = await resp?.json();
-  return respJson as TranslateResponse;
-};
+import { useState } from "react";
 
 export default function App() {
-  const [isTranslating, setIsTranslating] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [inputText, setInput] = useState("");
-  const [resp, setResp] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [resp, setResp] = useState<any>();
 
-  const { getToken } = useAuth();
+  const translateMutation = useTranslateMutation();
 
   const translatePage = useTranslate("translate");
   const commonTranslation = useTranslate("common");
 
-  useEffect(() => {
-    getToken().then((token) => {
-      console.log("alert", token);
-    });
-  }, [getToken]);
-
-  useEffect(() => {
-    if (inputText) {
-      setIsError(false);
-      setIsTranslating(true);
-      translate({
-        text: inputText,
-        targetLang: "en-US",
-      })
-        .then((resp) => {
-          setIsTranslating(false);
-          setResp(resp.text);
-        })
-        .catch(() => {
-          setIsTranslating(false);
-          setIsError(true);
-        });
-    }
-  }, [inputText]);
   return (
     <div>
       <h2 className="text-center font-bold">{translatePage.heyyTranslate}</h2>
@@ -75,17 +23,27 @@ export default function App() {
         placeholder="Enter your translation here..."
         onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
           if (event.key === "Enter") {
-            setInput((event.target as HTMLInputElement)?.value);
+            const value = (event.target as HTMLInputElement)?.value;
+
+            translateMutation
+              .mutateAsync({
+                text: value,
+                targetLang: "zh-CN",
+              })
+              .then((resp) => {
+                setResp(resp);
+              });
           }
         }}
       />
+
       <div className="text-center my-8">
-        {isError ? (
+        {translateMutation?.isError ? (
           <div>{translatePage.translateError}</div>
-        ) : isTranslating ? (
+        ) : translateMutation?.isPending ? (
           <div> {commonTranslation.loading} </div>
         ) : (
-          <div>{decodeURIComponent(resp)}</div>
+          <div>{JSON.stringify(resp)}</div>
         )}
       </div>
     </div>
