@@ -1,5 +1,7 @@
 import { useTranslate } from "@/lib/i18n/hooks/use-translate";
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
+import { WithRounded } from "./with-roundex";
 import { RoundedLink } from "./rounded-link";
 
 export const HomeBanner = () => {
@@ -9,7 +11,15 @@ export const HomeBanner = () => {
       <h1 className="text-4xl font-bold">{translation.title}</h1>
       <p className="text-xl font-light">{translation.description}</p>
 
-      <RoundedLink href="/login">{translation.gettingStarted}</RoundedLink>
+      <SignedOut>
+        <WithRounded>
+          <SignInButton />
+        </WithRounded>
+      </SignedOut>
+
+      <SignedIn>
+        <RoundedLink href="/app">{translation.gettingStarted}</RoundedLink>
+      </SignedIn>
     </section>
   );
 };

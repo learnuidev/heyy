@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { WithRounded } from "./with-roundex";
 
 export const RoundedLink = ({
   children,
@@ -11,14 +12,10 @@ export const RoundedLink = ({
   className?: string;
 }) => {
   return (
-    <Link
-      href={href}
-      className={cn(
-        "mt-4 inline-block border-[1px] px-4 py-2 rounded-full",
-        className
-      )}
-    >
-      {children}
-    </Link>
+    <WithRounded>
+      <Link href={href} className={cn(className)}>
+        {children}
+      </Link>
+    </WithRounded>
   );
 };
