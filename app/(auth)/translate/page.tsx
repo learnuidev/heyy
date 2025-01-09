@@ -19,7 +19,7 @@ export default function App() {
   const commonTranslation = useTranslate("common");
 
   return (
-    <div className="h-screen dark:bg-black">
+    <div>
       <h2 className="text-center font-bold">{translatePage.heyyTranslate}</h2>
 
       <input
